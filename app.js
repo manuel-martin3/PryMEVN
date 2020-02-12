@@ -5,6 +5,18 @@ import path from 'path';
 
 const app = express();
 
+//conexion BD MongoDb
+const mongoose = require('mongoose');
+const uri = 'mongodb://localhost:27017/myapp';
+const options = {
+  useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true
+}
+// Or using promises
+mongoose.connect(uri, options).then(
+  () => { console.log('Conectado a MongoDB'); },
+  err => { err }
+);
+
 // Middleware
 app.use(morgan('tiny'));
 app.use(cors());
@@ -16,6 +28,8 @@ app.use(express.urlencoded({ extended: true }));
 //app.get('./', (req, res) => {
 //  res.send('Hello World!');
 //});
+
+app.use('/api', require('./routes/nota.js'));
 
 // Middleware para Vue.js router modo history
 const history = require('connect-history-api-fallback');
